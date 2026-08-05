@@ -1,0 +1,29 @@
+import { StandardTableView, Button, VerticalBox, HorizontalBox } from "std-widgets.slint";
+
+export component MainWindow inherits Window {
+    title: "procXplorer";
+    preferred-width: 900px;
+    preferred-height: 600px;
+
+    in-out property <[[StandardListViewItem]]> process-list: [];
+    callback refresh-clicked();
+
+    VerticalBox {
+        HorizontalBox {
+            alignment: start;
+            Button {
+                text: "Refresh Processes";
+                clicked => { root.refresh-clicked(); }
+            }
+        }
+
+        StandardTableView {
+            columns: [
+                { title: "PID" },
+                { title: "Process Name" },
+                { title: "Threads" },
+            ];
+            rows: root.process-list;
+        }
+    }
+}

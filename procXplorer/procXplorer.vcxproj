@@ -70,6 +70,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <!-- Debug | Win32 -->
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -77,12 +78,22 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)src\ThirdParty\Slint\include;$(ProjectDir)src\ThirdParty\Slint\include\slint;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)src\ThirdParty\Slint\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>slint_cpp.dll.lib;dwmapi.lib;user32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(ProjectDir)src\ThirdParty\Slint\bin\slint-compiler.exe" --format cpp "$(ProjectDir)src\main_window.slint" -o "$(ProjectDir)src\main_window.h"</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(ProjectDir)src\ThirdParty\Slint\lib\slint_cpp.dll" "$(TargetDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
+  <!-- Release | Win32 -->
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -92,12 +103,22 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)src\ThirdParty\Slint\include;$(ProjectDir)src\ThirdParty\Slint\include\slint;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)src\ThirdParty\Slint\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>slint_cpp.dll.lib;dwmapi.lib;user32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(ProjectDir)src\ThirdParty\Slint\bin\slint-compiler.exe" --format cpp "$(ProjectDir)src\main_window.slint" -o "$(ProjectDir)src\main_window.h"</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(ProjectDir)src\ThirdParty\Slint\lib\slint_cpp.dll" "$(TargetDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
+  <!-- Debug | x64 -->
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -105,12 +126,23 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)src\ThirdParty\Slint\include;$(ProjectDir)src\ThirdParty\Slint\include\slint;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)src\ThirdParty\Slint\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>slint_cpp.dll.lib;dwmapi.lib;user32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(ProjectDir)src\ThirdParty\Slint\bin\slint-compiler.exe" --format cpp "$(ProjectDir)src\main_window.slint" -o "$(ProjectDir)src\main_window.h"</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(ProjectDir)src\ThirdParty\Slint\lib\slint_cpp.dll" "$(TargetDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
+  <!-- Release | x64 -->
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -120,35 +152,40 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\ThirdParty\imgui;$(ProjectDir)src\ThirdParty\imgui\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)src\ThirdParty\Slint\include;$(ProjectDir)src\ThirdParty\Slint\include\slint;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;d3dcompiler.lib;user32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)src\ThirdParty\Slint\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>slint_cpp.dll.lib;dwmapi.lib;user32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(ProjectDir)src\ThirdParty\Slint\bin\slint-compiler.exe" --format cpp "$(ProjectDir)src\main_window.slint" -o "$(ProjectDir)src\main_window.h"</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(ProjectDir)src\ThirdParty\Slint\lib\slint_cpp.dll" "$(TargetDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core\Kernel\DriverCOM\DriverCOM.cpp" />
     <ClCompile Include="src\Core\Usermode\Processes\Processes.cpp" />
     <ClCompile Include="src\Core\Usermode\Scylla\Scylla.cpp" />
     <ClCompile Include="src\Core\Utils\String\String.cpp" />
-    <ClCompile Include="src\Gui\Gui.cpp" />
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\ThirdParty\imgui\backends\imgui_impl_dx11.cpp" />
-    <ClCompile Include="src\ThirdParty\imgui\backends\imgui_impl_win32.cpp" />
-    <ClCompile Include="src\ThirdParty\imgui\imgui.cpp" />
-    <ClCompile Include="src\ThirdParty\imgui\imgui_demo.cpp" />
-    <ClCompile Include="src\ThirdParty\imgui\imgui_draw.cpp" />
-    <ClCompile Include="src\ThirdParty\imgui\imgui_tables.cpp" />
-    <ClCompile Include="src\ThirdParty\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\Kernel\DriverCOM\DriverCom.h" />
+    <ClInclude Include="src\Core\Kernel\KernelStructs.h" />
     <ClInclude Include="src\Core\Usermode\Processes\Processes.h" />
     <ClInclude Include="src\Core\Usermode\Scylla\Scylla.h" />
     <ClInclude Include="src\Core\Usermode\Scylla\ScyllaBinaries.h" />
     <ClInclude Include="src\Core\Utils\Utils.h" />
-    <ClInclude Include="src\FrontEnd\Gui\Gui.h" />
-    <ClInclude Include="src\Gui\Gui.h" />
+    <ClInclude Include="src\main_window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\main_window.slint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
