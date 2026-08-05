@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="procXplorer/procXplorer.vcxproj" Id="da5d3517-b809-46ff-b51c-c96bcb746509" />
+</Solution>
