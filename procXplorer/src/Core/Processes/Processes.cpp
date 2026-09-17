@@ -36,7 +36,7 @@ std::vector<CTH32SGetAll> GetAllProcessIDs()
 
 	if (Process32First(hSnapshot, &pe))
 	{
-		do  // use "do{}" to not skip the first pid (if we do "while (Process32Next(hSnapshot, &pe)); {pids.push_back(pe.th32ProcessID);}" it will first do next and then push the pid so it wont catch the first one
+		do  // use "do{}" to not skip the first pid (if we do "while (Process32Next(hSnapshot, &pe)); {pids.push_back(entry);}" it will first do next and then push the pid so it wont catch the first one
 		{
 			CTH32SGetAll entry;
 			entry.th32ProcessID = static_cast<uint32_t>(pe.th32ProcessID);
@@ -55,12 +55,20 @@ std::vector<CTH32SGetAll> GetAllProcessIDs()
 
 
 
-
 ProcessInfo getProcessInfo(CTH32SGetAll procinfo)
 { 
 
-	std::cout << procinfo.szExeFile << std::endl;
-	return { procinfo.th32ProcessID, procinfo.szExeFile }; //temporary
+
+	std::wstring wname = NarrowToWide(procinfo.szExeFile);
+
+	return { 
+		procinfo.th32ProcessID, 
+		procinfo.th32ParentProcessID, 
+		procinfo.cntThreads, 
+		procinfo.pcPriClassBase, 
+		procinfo.szExeFile,
+		wname
+	};
 }
 
 
