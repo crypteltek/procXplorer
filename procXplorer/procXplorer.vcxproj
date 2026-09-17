@@ -169,19 +169,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Core\Kernel\DriverCOM\DriverCOM.cpp" />
-    <ClCompile Include="src\Core\Usermode\Processes\Processes.cpp" />
-    <ClCompile Include="src\Core\Usermode\Scylla\Scylla.cpp" />
-    <ClCompile Include="src\Core\Utils\String\String.cpp" />
-    <ClCompile Include="src\Main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Core\Kernel\DriverCOM\DriverCom.h" />
-    <ClInclude Include="src\Core\Kernel\KernelStructs.h" />
-    <ClInclude Include="src\Core\Usermode\Processes\Processes.h" />
-    <ClInclude Include="src\Core\Usermode\Scylla\Scylla.h" />
-    <ClInclude Include="src\Core\Usermode\Scylla\ScyllaBinaries.h" />
-    <ClInclude Include="src\Core\Utils\Utils.h" />
     <ClInclude Include="src\main_window.h" />
   </ItemGroup>
   <ItemGroup>
