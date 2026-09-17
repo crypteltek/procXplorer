@@ -7,6 +7,7 @@
 #include "Processes.h"
 #include "../globals.h"
 #include "../Utils/Utils.h"
+#include "GetProcInfo/GetProcInfo.h"
 
 
 
@@ -55,11 +56,13 @@ std::vector<CTH32SGetAll> GetAllProcessIDs()
 
 
 
-ProcessInfo getProcessInfo(CTH32SGetAll procinfo)
+ProcessInfo getProcessInfo(CTH32SGetAll procinfo, ULONGLONG systemDeltaTime)
 { 
-
-
 	std::wstring wname = NarrowToWide(procinfo.szExeFile);
+
+	HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, procinfo.th32ProcessID);
+
+	double cpuUsage = getCpuUsagePercentage(hProcess, procinfo.th32ProcessID, systemDeltaTime);
 
 	return { 
 		procinfo.th32ProcessID, 
@@ -67,20 +70,25 @@ ProcessInfo getProcessInfo(CTH32SGetAll procinfo)
 		procinfo.cntThreads, 
 		procinfo.pcPriClassBase, 
 		procinfo.szExeFile,
-		wname
+		wname,
+		cpuUsage,
+		0.0,
+		0.0,
+
+		10,
+		10,
+		10,
 	};
 }
 
-
-
-
 void fillProcessesVector()
 {
+	ULONGLONG systemDeltaTime = UpdateSystemCpuDelta();
 	std::vector<CTH32SGetAll> pids = GetAllProcessIDs();
 
 	for (CTH32SGetAll pid : pids)
 	{
-		ProcessInfo procinfo = getProcessInfo(pid);
+		ProcessInfo procinfo = getProcessInfo(pid, systemDeltaTime);
 		processes.push_back(procinfo);
 	}
 }

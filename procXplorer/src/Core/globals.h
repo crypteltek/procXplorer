@@ -1,6 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <windows.h>
+#include <unordered_map>
+
 
 
 struct ProcessInfo
@@ -20,6 +23,10 @@ struct ProcessInfo
 
 	uint32_t hdc = 0; // handle count
 	
+	uint32_t gdi = 0; // GDI (graphical driver interface) objects (count)
+	uint32_t uso = 0; // user objects (count)
+
+	// i just learned i could do a struct in a struct
 
 };
 
