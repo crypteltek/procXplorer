@@ -169,10 +169,18 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\globals.h" />
+    <ClInclude Include="src\Core\Processes\Processes.h" />
+    <ClInclude Include="src\Core\Utils\Utils.h" />
     <ClInclude Include="src\main_window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\main_window.slint" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Core\main.cpp" />
+    <ClCompile Include="src\Core\Processes\Processes.cpp" />
+    <ClCompile Include="src\Core\Utils\StringUtils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

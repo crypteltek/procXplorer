@@ -7,12 +7,12 @@
 
 struct ProcessInfo
 {
-	int pid = 0;
+	uint32_t pid = 0;
 	std::string name = "";
 };
 
 
 
-std::vector<ProcessInfo> processes = {};
+inline std::vector<ProcessInfo> processes = {};
 
 
