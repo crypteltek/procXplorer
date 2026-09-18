@@ -33,5 +33,8 @@ struct ProcessInfo
 
 
 inline  std::vector<ProcessInfo> processes = {};
+inline  std::unordered_set<uint32_t> PrevFramCache = {}; // cache of all pid's last refresh to be able to find dead pid's and remove them from the CPU timing check for example
+inline  std::unordered_set<uint32_t> CurFramCache = {}; // cache of all pid's this frame im not sure if i will need it in other cpp files later down the road so il leave it here
+// transformed into unordered_set because i just learned it was better to compare if somthing is / !is in the other list
 
 

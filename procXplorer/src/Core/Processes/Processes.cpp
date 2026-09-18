@@ -56,19 +56,33 @@ std::vector<CTH32SGetAll> GetAllProcessIDs()
 
 
 
+void clearDeadPIDCache(uint32_t pid)
+{
+	//TODO CLEAR THE SPECIFIC PID OFF ALL CACHES
+}
+
 ProcessInfo getProcessInfo(CTH32SGetAll procinfo, ULONGLONG systemDeltaTime)
-{ 
+{
 	std::wstring wname = NarrowToWide(procinfo.szExeFile);
 
-	HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, procinfo.th32ProcessID);
+	HANDLE hProcessPQLI = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, procinfo.th32ProcessID);
 
-	double cpuUsage = getCpuUsagePercentage(hProcess, procinfo.th32ProcessID, systemDeltaTime);
 
-	return { 
-		procinfo.th32ProcessID, 
-		procinfo.th32ParentProcessID, 
-		procinfo.cntThreads, 
-		procinfo.pcPriClassBase, 
+
+	double cpuUsage = 0.0;
+	if (hProcessPQLI != 0)
+	{
+		cpuUsage = getCpuUsagePercentage(hProcessPQLI, procinfo.th32ProcessID, systemDeltaTime);
+
+		CloseHandle(hProcessPQLI);
+	}
+
+
+	return {
+		procinfo.th32ProcessID,
+		procinfo.th32ParentProcessID,
+		procinfo.cntThreads,
+		procinfo.pcPriClassBase,
 		procinfo.szExeFile,
 		wname,
 		cpuUsage,
@@ -84,11 +98,39 @@ ProcessInfo getProcessInfo(CTH32SGetAll procinfo, ULONGLONG systemDeltaTime)
 void fillProcessesVector()
 {
 	ULONGLONG systemDeltaTime = UpdateSystemCpuDelta();
-	std::vector<CTH32SGetAll> pids = GetAllProcessIDs();
+	std::vector<CTH32SGetAll> list = GetAllProcessIDs();
 
-	for (CTH32SGetAll pid : pids)
+	CurFramCache.clear();
+	CurFramCache.reserve(list.size()); //if you reserve it does it in one time else each time i add if it goes above the limit it will increment wich can increment multiple times
+
+
+	for (CTH32SGetAll& process : list) // using & allows me to look at the existing copy instead of remaking a new allocation and copy in memory of the whole cache since CTH32SGetAll has a string it could bhe heavy
 	{
-		ProcessInfo procinfo = getProcessInfo(pid, systemDeltaTime);
+		CurFramCache.insert(process.th32ProcessID);
+	}
+
+	if (!PrevFramCache.empty())
+	{
+		for (uint32_t prevPID : PrevFramCache)
+		{
+			if (CurFramCache.find(prevPID) == CurFramCache.end())
+			{
+				clearDeadPIDCache(prevPID);
+			}
+		}
+	}
+	// make cache and compare what is in cache and if its in the live version (if no call clearDeadPIDCache())
+
+
+
+	processes.clear(); // clear first else cache will just get bigger and bigger and bigger and bigger alr il stop
+	processes.reserve(list.size()); // reserve first for the same reason as above
+	for (CTH32SGetAll& process : list)
+	{
+		ProcessInfo procinfo = getProcessInfo(process, systemDeltaTime);
 		processes.push_back(procinfo);
 	}
+	
+
+	PrevFramCache = CurFramCache; // filling the prev PID cache list for next run with this frame's cache
 }
